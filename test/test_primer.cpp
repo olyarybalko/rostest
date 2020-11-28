@@ -9,13 +9,27 @@
 // Declare a test
 TEST(TestSuite, testCase1)
 {
-//<test things here, calling EXPECT_* and/or ASSERT_* macros as needed>
+  Point A, B, C;
+  A.setX(0.0);
+  A.setY(0.0);
+  B.setX(1.0);
+  B.setY(1.0);
+  C = A.milieu(B);
+  ASSERT_EQ(C.getX(), 0.5);
+  ASSERT_EQ(C.getY(), 0.5);
 }
 
 // Declare another test
 TEST(TestSuite, testCase2)
 {
-//<test things here, calling EXPECT_* and/or ASSERT_* macros as needed>
+  Point A, B, C;
+  double d;
+  A.setX(0.0);
+  A.setY(0.0);
+  B.setX(2.0);
+  B.setY(2.0);
+  d = round(A.distance(B)*1000)/1000;
+  ASSERT_EQ(d, 2.828);
 }
 
 // Run all the tests that were declared with TEST()
