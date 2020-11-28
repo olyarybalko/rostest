@@ -196,10 +196,12 @@ add_executable(${PROJECT_NAME}_node src/point.cpp src/rostest_node.cpp)
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_primer.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+
+catkin_add_gtest(${PROJECT_NAME}-test src/point.cpp test/test_primer.cpp)
+
+target_link_libraries(${PROJECT_NAME}-test ${catkin_LIBRARIES} ${PROJECT_NAME})
+
+
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
