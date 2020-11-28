@@ -1,6 +1,6 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
-//#include "point.h"
+#include "point.h"
 #include <sstream>
 
 
@@ -20,13 +20,23 @@ int main(int argc, char **argv)
 
   int count = 0;
 
+  Point A, B, C;
+  double d;
+  A.setX(0.0);
+  A.setY(0.0);
+  B.setX(1.0);
+  B.setY(1.0);
+ 
+  C = A.milieu(B);
+  d = A.distance(B);
+
   while (ros::ok())
   {
 
     std_msgs::String msg;
 
     std::stringstream ss;
-    ss << "hello world " << "" << count;
+    ss << "hello world " << count << " " << d;
     msg.data = ss.str() ;
 
 
