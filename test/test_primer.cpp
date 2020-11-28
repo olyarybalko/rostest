@@ -10,19 +10,22 @@
 TEST(TestSuite, testCase1)
 {
   Point A, B, C;
+  double roundX, roundY;
   A.setX(0.0);
   A.setY(0.0);
-  B.setX(1.0);
-  B.setY(1.0);
+  B.setX(3.555);
+  B.setY(3.556);
   C = A.milieu(B);
-  ASSERT_EQ(C.getX(), 0.5);
-  ASSERT_EQ(C.getY(), 0.5);
+  roundX = round(C.getX()*1000)/1000;
+  roundY = round(C.getY()*1000)/1000;
+  ASSERT_EQ(roundX, 1.778);
+  ASSERT_EQ(roundY, 1.778);
 }
 
 // Declare another test
 TEST(TestSuite, testCase2)
 {
-  Point A, B, C;
+  Point A, B;
   double d;
   A.setX(0.0);
   A.setY(0.0);
