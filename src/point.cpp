@@ -29,7 +29,7 @@ Point Point::milieu(const Point &P)
 {
  Point M;
  M.x = 0.5*(P.x + x);
- M.y = 0.5*(P.y + y) /2;
+ M.y = 0.5*(P.y + y);
  return M;
 }
 
