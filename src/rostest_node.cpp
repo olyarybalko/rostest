@@ -1,6 +1,7 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "point.h"
+#include "systeminfo.h"
 #include <sstream>
 
 
@@ -30,13 +31,15 @@ int main(int argc, char **argv)
   C = A.milieu(B);
   d = A.distance(B);
 
+  SystemInfo thisSystem;
+
   while (ros::ok())
   {
 
     std_msgs::String msg;
 
     std::stringstream ss;
-    ss << "hello world " << count << " " << d;
+    ss << "hello world " << count << " " << d << thisSystem.getUpTime();
     msg.data = ss.str() ;
 
 
