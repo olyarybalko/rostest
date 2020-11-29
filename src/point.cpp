@@ -28,16 +28,11 @@ double Point::distance(const Point &P)
 Point Point::milieu(const Point &P)
 {
  Point M;
- M.x = (P.x + x) /2;
- M.y = (P.y + y) /2;
+ M.x = 0.5*(P.x + x);
+ M.y = 0.5*(P.y + y);
  return M;
 }
 
-void Point::saisir()
-{
- cout << "Tapez l'abscisse : "; cin >> x;
- cout << "Tapez l'ordonnée : "; cin >> y;
-}
 void Point::afficher()
 {
  cout << "L'abscisse vaut " << x << endl;
