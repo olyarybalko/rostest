@@ -122,6 +122,7 @@ include_directories(
 ## Declare a C++ library
  add_library(${PROJECT_NAME}
    src/point.cpp
+   src/systeminfo.cpp
  )
 
 ## Add cmake target dependencies of the library
@@ -132,7 +133,7 @@ add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EX
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME}_node src/point.cpp src/rostest_node.cpp)
+add_executable(${PROJECT_NAME}_node src/point.cpp src/systeminfo.cpp src/rostest_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
