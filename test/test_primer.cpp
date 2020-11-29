@@ -2,7 +2,6 @@
 #include "../src/point.h"
 // Bring in gtest
 #include <gtest/gtest.h>
-//
 #include "ros/ros.h"
 
 // Declare a test
