@@ -39,7 +39,7 @@ int main(int argc, char **argv)
     std_msgs::String msg;
 
     std::stringstream ss;
-    ss << "hello world " << count << " " << d << thisSystem.getUpTime();
+    ss << thisSystem.getSerialNumber()<< " " << count << " " << d << thisSystem.getUpTime();
     msg.data = ss.str() ;
 
 
