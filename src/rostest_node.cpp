@@ -35,13 +35,12 @@ int main(int argc, char **argv)
 
   while (ros::ok())
   {
-
     std_msgs::String msg;
 
     std::stringstream ss;
-    ss << thisSystem.getSerialNumber()<< " " << count << " " << d << thisSystem.getUpTime();
+    ss <<  thisSystem.getDateTime() << " " << thisSystem.getSerialNumber() << " " <<  d << " " 
+    << thisSystem.getUptimeSys() << " " << thisSystem.getLoadAverage(1);
     msg.data = ss.str() ;
-
 
     ROS_INFO("%s", msg.data.c_str());
 
