@@ -32,7 +32,7 @@ int main(int argc, char **argv)
   d = A.distance(B);
 
   SystemInfo thisSystem;
-
+  
   while (ros::ok())
   {
 

@@ -1,8 +1,11 @@
 // Bring in my package's API, which is what I'm testing
 #include "../src/point.h"
+#include "../src/systeminfo.h"
 // Bring in gtest
 #include <gtest/gtest.h>
 #include "ros/ros.h"
+#include <string>
+#include <ctime>
 
 // Declare a test
 TEST(TestSuite, testConstDefault)
@@ -47,6 +50,21 @@ TEST(TestSuite, testDistance)
   B.setY(2.0);
   d = round(A.distance(B)*10000)/10000;
   ASSERT_DOUBLE_EQ(d, 2.8284);
+}
+
+//test Systeminfo: type string, longueur de retour <=128, time de reponce <= 6 ms 
+TEST(TestSuite, testSysteminfo)
+{
+  SystemInfo infotime;
+  std::string info;
+  EXPECT_TRUE(typeid(info) == typeid(infotime.getUpTime()));
+
+  ASSERT_LE(infotime.getUpTime().size(), 128);
+
+  std::clock_t  start;
+  start = std::clock();
+  infotime.getUpTime();
+  ASSERT_LE((std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000), 6);
 }
 
 // Run all the tests that were declared with TEST()
