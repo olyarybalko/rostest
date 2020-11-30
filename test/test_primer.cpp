@@ -55,16 +55,21 @@ TEST(TestSuite, testDistance)
 //test Systeminfo: type string, longueur de retour <=128, time de reponce <= 6 ms 
 TEST(TestSuite, testSysteminfo)
 {
+  struct timespec now;
+  double start, end;
+
   SystemInfo infotime;
   std::string info;
   EXPECT_TRUE(typeid(info) == typeid(infotime.getUpTime()));
 
   ASSERT_LE(infotime.getUpTime().size(), 128);
 
-  std::clock_t  start;
-  start = std::clock();
+  clock_gettime(CLOCK_MONOTONIC, &now);
+  start=now.tv_sec+1.e-9*now.tv_nsec;
   infotime.getUpTime();
-  ASSERT_LE((std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000), 6);
+  clock_gettime(CLOCK_MONOTONIC, &now);
+  end=now.tv_sec+1.e-9*now.tv_nsec;
+  ASSERT_LE((end-start), .1);
 }
 
 // Run all the tests that were declared with TEST()
