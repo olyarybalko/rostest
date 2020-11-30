@@ -33,13 +33,29 @@ int main(int argc, char **argv)
 
   SystemInfo thisSystem;
   
+
+  struct timespec now;
+  double temps, temps2;
+  
+
+
   while (ros::ok())
   {
     std_msgs::String msg;
 
     std::stringstream ss;
+    //std::clock_t  startt;
+    clock_gettime(CLOCK_MONOTONIC, &now);
+    temps=now.tv_sec+1.e-9*now.tv_nsec;
+
     ss <<  thisSystem.getDateTime() << " " << thisSystem.getSerialNumber() << " " <<  d << " " 
     << thisSystem.getUptimeSys() << " " << thisSystem.getLoadAverage(1);
+
+    clock_gettime(CLOCK_MONOTONIC, &now);
+    temps2=now.tv_sec+1.e-9*now.tv_nsec;
+
+    //std::cout << (std::clock() - startt)/(double)(CLOCKS_PER_SEC / 1000.0)<<std::endl;
+    std::cout << temps2 - temps <<std::endl;
     msg.data = ss.str() ;
 
     ROS_INFO("%s", msg.data.c_str());
