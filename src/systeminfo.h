@@ -6,6 +6,7 @@ class SystemInfo
 
     public:
         std::string getUpTime();
+        std::string getSerialNumber();
 
 };
 #endif
