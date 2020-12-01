@@ -10,7 +10,6 @@ class SystemInfo
         std::string getFreeRam();
         std::string getUptimeSys();
         std::string getLoadAverage(const int i);
-        std::string getRam();
 
 };
 #endif
