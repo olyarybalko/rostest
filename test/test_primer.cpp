@@ -6,6 +6,13 @@
 #include "ros/ros.h"
 #include <string>
 #include <ctime>
+#include <sstream>
+#include "std_msgs/String.h"
+
+int forfait = 1e+8;
+int year = 2;
+int month = 20;
+int days = 22;
 
 // Declare a test
 TEST(TestSuite, testConstDefault)
@@ -60,6 +67,8 @@ TEST(TestSuite, testDistance)
 //test getFreeRam type string, longueur de retour <=32, time de reponce <= 2 ms 
 //test getUptimeSys type string, longueur de retour <=32, time de reponce <= 2 ms 
 //test getLoadAverage type string, longueur de retour <=5, time de reponce <= 2 ms 
+
+//22*12*2*2 = forfait 100 MB = 1e+8 Bites
 
 TEST(TestSuite, testSysteminfo)
 {
@@ -149,6 +158,32 @@ TEST(TestSuite, testLoadAverage)
   end=now.tv_sec+1.e-9*now.tv_nsec;
   ASSERT_LE((end-start), .02);
 }
+
+TEST(TestSuite, testMsg)
+{
+  Point A, B;
+  double d;
+  A.setX(0.0);
+  A.setY(0.0);
+  B.setX(2.0);
+  B.setY(2.0);
+  d = round(A.distance(B)*10000)/10000;
+
+  SystemInfo thisSystem;
+  std_msgs::String msg;
+  std::stringstream ss;
+
+  ss <<  thisSystem.getDateTime() << " " << thisSystem.getSerialNumber() << " " <<  d << " " 
+  << thisSystem.getUptimeSys() << " " << thisSystem.getLoadAverage(1);
+
+  msg.data = ss.str();
+
+  float forfait_days = 0.0;
+  forfait_days = forfait / (days*month*days);
+
+  ASSERT_LE(msg.data.size(), forfait_days);
+}
+
 
 /*TEST(TestSuite, testRam)
 {
