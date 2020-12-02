@@ -1,0 +1,9 @@
+<!--
+This package should listen on user defined originator_topic a point of clound message from n-ydlidars.
+-->
+
+<launch>
+        <node pkg="rostest" name="rostest_name" type="rostest_node" output="screen">
+		<param name="where_to_publish" value="/sysinfo"/>
+		</node>
+</launch>
