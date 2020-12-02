@@ -9,10 +9,12 @@
 #include <sstream>
 #include "std_msgs/String.h"
 
-int forfait = 1e+8;
-int year = 2;
-int month = 20;
-int days = 22;
+// These variables for IoT
+const int forfait = 1e+8;
+const int year = 2;
+const int month = 20;
+const int days = 22;
+const int timesperday = 2;
 
 // Declare a test
 TEST(TestSuite, testConstDefault)
@@ -68,7 +70,7 @@ TEST(TestSuite, testDistance)
 //test getUptimeSys type string, longueur de retour <=32, time de reponce <= 2 ms 
 //test getLoadAverage type string, longueur de retour <=5, time de reponce <= 2 ms 
 
-//22*12*2*2 = forfait 100 MB = 1e+8 Bites
+//22*12*2*2 = forfait 100 MB = 1e+8 Bytes
 
 TEST(TestSuite, testSysteminfo)
 {
@@ -113,15 +115,15 @@ TEST(TestSuite, testUptimeSys)
   struct timespec now;
   double start, end;
 
-  SystemInfo infoUptime;
-  EXPECT_TRUE(typeid(std::string) == typeid(infoUptime.getUptimeSys()));
+  SystemInfo infoUpTime;
+  EXPECT_TRUE(typeid(std::string) == typeid(infoUpTime.getUpTime()));
 
-  ASSERT_LE(infoUptime.getUptimeSys().size(), 32);
+  ASSERT_LE(infoUpTime.getUpTime().size(), 32);
 
   // test time de  reponce
   clock_gettime(CLOCK_MONOTONIC, &now);
   start=now.tv_sec+1.e-9*now.tv_nsec;
-  infoUptime.getUptimeSys();
+  infoUpTime.getUpTime();
   clock_gettime(CLOCK_MONOTONIC, &now);
   end=now.tv_sec+1.e-9*now.tv_nsec;
   ASSERT_LE((end-start), .02);
@@ -174,12 +176,12 @@ TEST(TestSuite, testMsg)
   std::stringstream ss;
 
   ss <<  thisSystem.getDateTime() << " " << thisSystem.getSerialNumber() << " " <<  d << " " 
-  << thisSystem.getUptimeSys() << " " << thisSystem.getLoadAverage(1);
+  << thisSystem.getUpTime() << " " << thisSystem.getLoadAverage(1);
 
   msg.data = ss.str();
 
   float forfait_days = 0.0;
-  forfait_days = forfait / (days*month*days);
+  forfait_days = forfait / (days*month*days*timesperday);
 
   ASSERT_LE(msg.data.size(), forfait_days);
 }

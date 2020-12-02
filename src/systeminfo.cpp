@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 
-std::string SystemInfo::getUpTime()
+std::string SystemInfo::getUpTimeFile()
 {
     // old C style code for file and C++ for try/throw
     char buffer[128];
@@ -30,6 +30,27 @@ std::string SystemInfo::getUpTime()
     std::string s(buffer);
 
  return s;
+}
+
+std::string SystemInfo::getUpTime()
+{
+    struct sysinfo sys_info;
+
+    int days, hours, mins, x = 1;
+
+    char buffer[128];
+
+    if(sysinfo(&sys_info) != 0)
+        perror("sysinfo");
+
+    days  = sys_info.uptime / 86400;
+    hours = (sys_info.uptime / 3600) - (days * 24);
+    mins  = (sys_info.uptime / 60) - (days * 1440) - (hours * 60);
+
+    sprintf(buffer,"%d:%d:%d:%ld",  days, hours, mins, sys_info.uptime % 60);
+
+    std::string s(buffer);
+    return s;
 }
 
 
@@ -74,26 +95,6 @@ std::string SystemInfo::getDateTime()
     return s;
 }
 
-std::string SystemInfo::getUptimeSys()
-{
-    struct sysinfo sys_info;
-
-    int days, hours, mins, x = 1;
-
-    char buffer[128];
-
-    if(sysinfo(&sys_info) != 0)
-        perror("sysinfo");
-
-    days  = sys_info.uptime / 86400;
-    hours = (sys_info.uptime / 3600) - (days * 24);
-    mins  = (sys_info.uptime / 60) - (days * 1440) - (hours * 60);
-
-    sprintf(buffer,"%d:%d:%d:%ld",  days, hours, mins, sys_info.uptime % 60);
-
-    std::string s(buffer);
-    return s;
-}
 
 std::string SystemInfo::getLoadAverage(const int i)
 {

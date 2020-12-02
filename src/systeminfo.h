@@ -8,7 +8,7 @@ class SystemInfo
         std::string getSerialNumber();
         std::string getDateTime();
         std::string getFreeRam();
-        std::string getUptimeSys();
+        std::string getUpTimeFile();
         std::string getLoadAverage(const int i);
 
 };
