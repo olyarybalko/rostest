@@ -1,7 +1,5 @@
-// Bring in my package's API, which is what I'm testing
 #include "../src/point.h"
 #include "../src/systeminfo.h"
-// Bring in gtest
 #include <gtest/gtest.h>
 #include "ros/ros.h"
 #include <string>
@@ -61,107 +59,107 @@ TEST(TestSuite, testDistance)
   ASSERT_DOUBLE_EQ(d, 2.8284);
 }
 
-//test Systeminfo: type string, longueur de retour <=128, time de reponce <= 6 ms
+//test UpTime: type string, longueur de retour <=128, time de reponce <= 6 ms
 
 //test getSerialNumber: type string, longueur de retour 000000000000000d == 16, time de reponce <= 5 ms 
 //test getDateTime: type string, longueur de retour 2020-11-30.21:56:51 == 19, time de reponce <= 2 ms 
 
 //test getFreeRam type string, longueur de retour <=32, time de reponce <= 2 ms 
-//test getUptimeSys type string, longueur de retour <=32, time de reponce <= 2 ms 
+//test getUptimeFile type string, longueur de retour <=70, time de reponce <= 2 ms 
 //test getLoadAverage type string, longueur de retour <=5, time de reponce <= 2 ms 
 
 //22*12*2*2 = forfait 100 MB = 1e+8 Bytes
 
-TEST(TestSuite, testSysteminfo)
+TEST(TestSuite, getUpTime)
 {
   struct timespec now;
   double start, end;
 
-  SystemInfo infotime;
-  EXPECT_TRUE(typeid(std::string) == typeid(infotime.getUpTime()));
+  SystemInfo info;
+  EXPECT_TRUE(typeid(std::string) == typeid(info.getUpTime()));
 
-  ASSERT_LE(infotime.getUpTime().size(), 128);
+  ASSERT_LE(info.getUpTime().size(), 128);
   
-  // test time de  reponce
+  // test time de  reponse
   clock_gettime(CLOCK_MONOTONIC, &now);
   start=now.tv_sec+1.e-9*now.tv_nsec;
-  infotime.getUpTime();
+  info.getUpTime();
   clock_gettime(CLOCK_MONOTONIC, &now);
   end=now.tv_sec+1.e-9*now.tv_nsec;
-  ASSERT_LE((end-start), .06);
+  ASSERT_LE((end-start), .065);
 } 
 
-TEST(TestSuite, testFreeRam)
+TEST(TestSuite, getFreeRam)
 {
   struct timespec now;
   double start, end;
 
-  SystemInfo infoRam;
-  EXPECT_TRUE(typeid(std::string) == typeid(infoRam.getFreeRam()));
+  SystemInfo info;
+  EXPECT_TRUE(typeid(std::string) == typeid(info.getFreeRam()));
 
-  ASSERT_LE(infoRam.getFreeRam().size(), 32);
+  ASSERT_LE(info.getFreeRam().size(), 32);
 
-  // test time de  reponce
+  // test time de  reponse
   clock_gettime(CLOCK_MONOTONIC, &now);
   start=now.tv_sec+1.e-9*now.tv_nsec;
-  infoRam.getFreeRam();
+  info.getFreeRam();
   clock_gettime(CLOCK_MONOTONIC, &now);
   end=now.tv_sec+1.e-9*now.tv_nsec;
   ASSERT_LE((end-start), .02);
 }
 
-TEST(TestSuite, testUptimeSys)
+TEST(TestSuite, getUpTimeFile)
 {
   struct timespec now;
   double start, end;
 
-  SystemInfo infoUpTime;
-  EXPECT_TRUE(typeid(std::string) == typeid(infoUpTime.getUpTime()));
+  SystemInfo info;
+  EXPECT_TRUE(typeid(std::string) == typeid(info.getUpTimeFile()));
 
-  ASSERT_LE(infoUpTime.getUpTime().size(), 32);
+  ASSERT_LE(info.getUpTimeFile().size(), 70);
 
-  // test time de  reponce
+  // test time de  reponse
   clock_gettime(CLOCK_MONOTONIC, &now);
   start=now.tv_sec+1.e-9*now.tv_nsec;
-  infoUpTime.getUpTime();
+  info.getUpTimeFile();
   clock_gettime(CLOCK_MONOTONIC, &now);
   end=now.tv_sec+1.e-9*now.tv_nsec;
-  ASSERT_LE((end-start), .02);
+  ASSERT_LE((end-start), .08);
 }
 
-TEST(TestSuite, testLoadAverage)
+TEST(TestSuite, getLoadAverage)
 {
   struct timespec now;
   double start, end;
 
-  SystemInfo infoLoadAverage;
+  SystemInfo info;
 
   // test switch case 1
-  EXPECT_TRUE(typeid(std::string) == typeid(infoLoadAverage.getLoadAverage(1)));
+  EXPECT_TRUE(typeid(std::string) == typeid(info.getLoadAverage(1)));
 
-  ASSERT_LE(infoLoadAverage.getLoadAverage(1).size(), 5);
+  ASSERT_LE(info.getLoadAverage(1).size(), 5);
 
-  long double LoadDouble_0 = std::stold(infoLoadAverage.getLoadAverage(1));
+  long double LoadDouble_0 = std::stold(info.getLoadAverage(1));
   ASSERT_LE(0.0, LoadDouble_0);
 
   // test switch case 0
-  EXPECT_TRUE(typeid(std::string) == typeid(infoLoadAverage.getLoadAverage(0)));
+  EXPECT_TRUE(typeid(std::string) == typeid(info.getLoadAverage(0)));
 
-  ASSERT_LE(infoLoadAverage.getLoadAverage(0).size(), 5);
+  ASSERT_LE(info.getLoadAverage(0).size(), 5);
 
-  long double LoadDouble_1 = std::stold(infoLoadAverage.getLoadAverage(0));
+  long double LoadDouble_1 = std::stold(info.getLoadAverage(0));
   ASSERT_LE(0.0, LoadDouble_1);
 
-  // test time de  reponce
+  // test time de  reponse
   clock_gettime(CLOCK_MONOTONIC, &now);
   start=now.tv_sec+1.e-9*now.tv_nsec;
-  infoLoadAverage.getLoadAverage(1);
+  info.getLoadAverage(1);
   clock_gettime(CLOCK_MONOTONIC, &now);
   end=now.tv_sec+1.e-9*now.tv_nsec;
   ASSERT_LE((end-start), .02);
 }
 
-TEST(TestSuite, testMsg)
+TEST(TestSuite, testMsgForfait)
 {
   Point A, B;
   double d;
@@ -171,17 +169,17 @@ TEST(TestSuite, testMsg)
   B.setY(2.0);
   d = round(A.distance(B)*10000)/10000;
 
-  SystemInfo thisSystem;
+  SystemInfo info;
   std_msgs::String msg;
   std::stringstream ss;
 
-  ss <<  thisSystem.getDateTime() << " " << thisSystem.getSerialNumber() << " " <<  d << " " 
-  << thisSystem.getUpTime() << " " << thisSystem.getLoadAverage(1);
+  ss <<  info.getDateTime() << " " << info.getSerialNumber() << " " <<  d << " " 
+  << info.getUpTimeFile() << " " << info.getLoadAverage(1);
 
   msg.data = ss.str();
 
   float forfait_days = 0.0;
-  forfait_days = forfait / (days*month*days*timesperday);
+  forfait_days = forfait / (year*month*days*2);
 
   ASSERT_LE(msg.data.size(), forfait_days);
 }
