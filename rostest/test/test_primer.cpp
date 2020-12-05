@@ -65,7 +65,7 @@ TEST(TestSuite, testDistance)
 //test getDateTime: type string, longueur de retour 2020-11-30.21:56:51 == 19, time de reponce <= 2 ms 
 
 //test getFreeRam type string, longueur de retour <=32, time de reponce <= 2 ms 
-//test getUptimeSys type string, longueur de retour <=32, time de reponce <= 2 ms 
+//test getUptimeFile type string, longueur de retour <=70, time de reponce <= 2 ms 
 //test getLoadAverage type string, longueur de retour <=5, time de reponce <= 2 ms 
 
 //22*12*2*2 = forfait 100 MB = 1e+8 Bytes
@@ -108,23 +108,23 @@ TEST(TestSuite, getFreeRam)
   ASSERT_LE((end-start), .02);
 }
 
-TEST(TestSuite, getUptimeSys)
+TEST(TestSuite, getUpTimeFile)
 {
   struct timespec now;
   double start, end;
 
   SystemInfo info;
-  EXPECT_TRUE(typeid(std::string) == typeid(info.getUptimeSys()));
+  EXPECT_TRUE(typeid(std::string) == typeid(info.getUpTimeFile()));
 
-  ASSERT_LE(info.getUptimeSys().size(), 32);
+  ASSERT_LE(info.getUpTimeFile().size(), 70);
 
   // test time de  reponse
   clock_gettime(CLOCK_MONOTONIC, &now);
   start=now.tv_sec+1.e-9*now.tv_nsec;
-  info.getUptimeSys();
+  info.getUpTimeFile();
   clock_gettime(CLOCK_MONOTONIC, &now);
   end=now.tv_sec+1.e-9*now.tv_nsec;
-  ASSERT_LE((end-start), .02);
+  ASSERT_LE((end-start), .08);
 }
 
 TEST(TestSuite, getLoadAverage)
@@ -174,7 +174,7 @@ TEST(TestSuite, testMsgForfait)
   std::stringstream ss;
 
   ss <<  info.getDateTime() << " " << info.getSerialNumber() << " " <<  d << " " 
-  << info.getUptimeSys() << " " << info.getLoadAverage(1);
+  << info.getUpTimeFile() << " " << info.getLoadAverage(1);
 
   msg.data = ss.str();
 
