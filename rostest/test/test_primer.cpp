@@ -1,7 +1,5 @@
-// Bring in my package's API, which is what I'm testing
 #include "../src/point.h"
 #include "../src/systeminfo.h"
-// Bring in gtest
 #include <gtest/gtest.h>
 #include "ros/ros.h"
 #include <string>
@@ -9,10 +7,12 @@
 #include <sstream>
 #include "std_msgs/String.h"
 
-int forfait = 1e+8;
-int year = 2;
-int month = 20;
-int days = 22;
+// These variables for IoT
+const int forfait = 1e+8;
+const int year = 2;
+const int month = 20;
+const int days = 22;
+const int timesperday = 2;
 
 // Declare a test
 TEST(TestSuite, testConstDefault)
@@ -68,7 +68,7 @@ TEST(TestSuite, testDistance)
 //test getUptimeSys type string, longueur de retour <=32, time de reponce <= 2 ms 
 //test getLoadAverage type string, longueur de retour <=5, time de reponce <= 2 ms 
 
-//22*12*2*2 = forfait 100 MB = 1e+8 Bites
+//22*12*2*2 = forfait 100 MB = 1e+8 Bytes
 
 TEST(TestSuite, getUpTime)
 {

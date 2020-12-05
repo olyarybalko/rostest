@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     std::stringstream ss;
 
     ss <<  thisSystem.getDateTime() << " " << thisSystem.getSerialNumber() << " " <<  d << " " 
-    << thisSystem.getUptimeSys() << " " << thisSystem.getLoadAverage(1);
+    << thisSystem.getUpTime() << " " << thisSystem.getLoadAverage(1);
 
     msg.data = ss.str() ;
 
