@@ -10,7 +10,7 @@
 // These variables for IoT
 const int forfait = 1e+8;
 const int year = 2;
-const int month = 20;
+const int month = 12;
 const int days = 22;
 const int timesperday = 2;
 
@@ -59,17 +59,7 @@ TEST(TestSuite, testDistance)
   ASSERT_DOUBLE_EQ(d, 2.8284);
 }
 
-//test UpTime: type string, longueur de retour <=128, time de reponce <= 6 ms
-
-//test getSerialNumber: type string, longueur de retour 000000000000000d == 16, time de reponce <= 5 ms 
-//test getDateTime: type string, longueur de retour 2020-11-30.21:56:51 == 19, time de reponce <= 2 ms 
-
-//test getFreeRam type string, longueur de retour <=32, time de reponce <= 2 ms 
-//test getUptimeFile type string, longueur de retour <=70, time de reponce <= 2 ms 
-//test getLoadAverage type string, longueur de retour <=5, time de reponce <= 2 ms 
-
-//22*12*2*2 = forfait 100 MB = 1e+8 Bytes
-
+//test getUpTime: type string, longueur de retour <=128, time de reponce <= 6 ms 
 TEST(TestSuite, getUpTime)
 {
   struct timespec now;
@@ -89,6 +79,7 @@ TEST(TestSuite, getUpTime)
   ASSERT_LE((end-start), .065);
 } 
 
+//test getFreeRam type string, longueur de retour <=32, time de reponce <= 2 ms 
 TEST(TestSuite, getFreeRam)
 {
   struct timespec now;
@@ -108,6 +99,7 @@ TEST(TestSuite, getFreeRam)
   ASSERT_LE((end-start), .02);
 }
 
+//test getUpTimeFile type string, longueur de retour <=70, time de reponce <= 2 ms 
 TEST(TestSuite, getUpTimeFile)
 {
   struct timespec now;
@@ -127,6 +119,7 @@ TEST(TestSuite, getUpTimeFile)
   ASSERT_LE((end-start), .08);
 }
 
+//test getLoadAverage type string, longueur de retour <=5, time de reponce <= 2 ms 
 TEST(TestSuite, getLoadAverage)
 {
   struct timespec now;
@@ -159,6 +152,7 @@ TEST(TestSuite, getLoadAverage)
   ASSERT_LE((end-start), .02);
 }
 
+//test MsgForfait 22days*12month*2year*2fois = forfait 100 MB = 1e+8 Bytes
 TEST(TestSuite, testMsgForfait)
 {
   Point A, B;
@@ -179,29 +173,48 @@ TEST(TestSuite, testMsgForfait)
   msg.data = ss.str();
 
   float forfait_days = 0.0;
-  forfait_days = forfait / (year*month*days*2);
+  forfait_days = forfait / (year*month*days*timesperday);
 
   ASSERT_LE(msg.data.size(), forfait_days);
 }
 
-
-/*TEST(TestSuite, testRam)
+//test getSerialNumber: type string, longueur de retour 000000000000000d == 16, time de reponce <= 5 ms 
+TEST(TestSuite, getSerialNumber)
 {
   struct timespec now;
   double start, end;
 
-  SystemInfo infoRam;
-  EXPECT_TRUE(typeid(std::string) == typeid(infoRam.getRam()));
+  SystemInfo info;
+  EXPECT_TRUE(typeid(std::string) == typeid(info.getSerialNumber()));
 
-  ASSERT_LE(infoRam.getRam().size(), 32);
+  ASSERT_LE(info.getSerialNumber().size(), 16);
 
   clock_gettime(CLOCK_MONOTONIC, &now);
   start=now.tv_sec+1.e-9*now.tv_nsec;
-  infoRam.getRam();
+  info.getSerialNumber();
+  clock_gettime(CLOCK_MONOTONIC, &now);
+  end=now.tv_sec+1.e-9*now.tv_nsec;
+  ASSERT_LE((end-start), .15);
+}
+
+//test getDateTime: type string, longueur de retour 2020-11-30.21:56:51 == 19, time de reponce <= 2 ms
+TEST(TestSuite, getDateTime)
+{
+  struct timespec now;
+  double start, end;
+
+  SystemInfo info;
+  EXPECT_TRUE(typeid(std::string) == typeid(info.getDateTime()));
+
+  ASSERT_TRUE(info.getDateTime().size() == 19);
+
+  clock_gettime(CLOCK_MONOTONIC, &now);
+  start=now.tv_sec+1.e-9*now.tv_nsec;
+  info.getDateTime();
   clock_gettime(CLOCK_MONOTONIC, &now);
   end=now.tv_sec+1.e-9*now.tv_nsec;
   ASSERT_LE((end-start), .02);
-}*/
+}
 
 // Run all the tests that were declared with TEST()
 int main(int argc, char **argv){
