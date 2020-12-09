@@ -216,10 +216,19 @@ TEST(TestSuite, getDateTime)
   ASSERT_LE((end-start), .02);
 }
 
+void chatterCallback(const std_msgs::String::ConstPtr& msg)
+{
+  ROS_INFO("I heard: [%s]", msg->data.c_str());
+}
+
+
+
+
 // Run all the tests that were declared with TEST()
 int main(int argc, char **argv){
   testing::InitGoogleTest(&argc, argv);
   ros::init(argc, argv, "tester");
-  ros::NodeHandle nh;
+  ros::NodeHandle n;
+  ros::Subscriber sub = n.subscribe("chatter", 1000, chatterCallback);
   return RUN_ALL_TESTS();
 }
